@@ -22,6 +22,8 @@ class Dungeon
 
   void Generate(int start_x, int start_y);
 
+  void CheckPosition(int x_pos, int y_pos);
+
   public:
 
   // Default constructor

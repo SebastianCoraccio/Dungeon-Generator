@@ -24,6 +24,7 @@ Dungeon::Dungeon(int w, int h) {
 // TODO: Allocate grid with a single block of memory
 // Doing so will be more efficient, and easier to assign x and y values to rooms
 void Dungeon::CreateGrid() {
+
   dungeon_grid = new Room *[height];
   for (int i = 0; i < height; ++i) {
     dungeon_grid[i] = new Room[width];
@@ -36,7 +37,6 @@ void Dungeon::CreateGrid() {
       dungeon_grid[i][j].y_location_ = j;
     }
   }
-
 
 }
 
@@ -61,8 +61,10 @@ int Dungeon::GetWidth() { return width; }
 int Dungeon::GetHeight() { return height; }
 
 // Returns a reference to a room in the dungeon at the position
-Room *Dungeon::GetRoom(int xpos, int ypos) {
-  return &dungeon_grid[xpos][ypos];
+// Positions in the grid are zero indexed
+Room *Dungeon::GetRoom(int x_pos, int y_pos) {
+  CheckPosition(x_pos, y_pos);
+  return &dungeon_grid[x_pos][y_pos];
 }
 
 // Create a random dungeon with a random start room
@@ -75,9 +77,13 @@ void Dungeon::GenerateRandomLayout() {
 
 // Create a random dungeon with defined start room
 void Dungeon::GenerateRandomLayout(int start_x, int start_y) {
+  CheckPosition(start_x, start_y);
   Generate(start_x, start_y);
 }
 
+
+// TODO: Currently not functioning correctly on boundaries
+// TODO: Refactor to include new rooms types
 void Dungeon::Generate(int start_x, int start_y) {
 
   // Create the start room
@@ -97,9 +103,9 @@ void Dungeon::CreateBranches(Room *room) {
 
   // If any of the adjacent rooms are off the grid then set their chance to 0
   if (room_x == 0) room->north_door_chance_ = 0.0;
-  if (room_x == width) room->south_door_chance_ = 0.0;
+  if (room_x == height - 1) room->south_door_chance_ = 0.0;
   if (room_y == 0) room->west_door_chance_ = 0.0;
-  if (room_y == height) room->east_door_chance_ = 0.0;
+  if (room_y == width - 1) room->east_door_chance_ = 0.0;
 
 
   // ----- Northern Branch -----
@@ -164,6 +170,20 @@ void Dungeon::CreateBranches(Room *room) {
     }
 
   }
+}
+
+void Dungeon::CheckPosition(int x_pos, int y_pos){
+  if(x_pos >= height || x_pos < 0) {
+    std::cerr << "Given X value must be 0 or greater " <<
+              "and less than the grid's width.\n";
+    exit(1);
+  }
+  if(y_pos >= width || y_pos < 0) {
+    std::cerr << "Given Y value must be 0 or greater " <<
+              "and less than the grid's height.\n";
+    exit(-1);
+  }
+
 }
 
 std::string Dungeon::toString() {

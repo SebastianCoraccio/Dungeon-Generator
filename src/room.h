@@ -3,8 +3,7 @@
 //
 // A Room Class created for building dungeons
 //
-// TODO: Make adjacent rooms and chances public or think of a good reason
-// TODO: to keep getters and setters
+// TODO: Make this class abstract and add new room types
 
 #ifndef DGNGEN_ROOM_H
 #define DGNGEN_ROOM_H

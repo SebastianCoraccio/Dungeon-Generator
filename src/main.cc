@@ -1,8 +1,8 @@
 #include <iostream>
 #include "dungeon.h"
 
-const int kGridXSize = 10;
-const int kGridYSize = 12;
+const int kGridXSize = 3;
+const int kGridYSize = 4;
 
 int RoomTest();
 int DungeonTest();
@@ -18,7 +18,6 @@ int main() {
 int RoomTest(){
   std::cout << "Running Room Test\n";
 
-
   Room room = Room(20,1,1,1);
   room.room_type_ = (Room::Start);
   std::string equalRoom = (room.room_type_ == Room::Start) ? "They are "
@@ -30,9 +29,11 @@ int RoomTest(){
 
 int DungeonTest(){
 
-  Dungeon dun1 = Dungeon(11,11);
+  Dungeon dun1 = Dungeon(kGridXSize, kGridYSize);
 
-  dun1.GenerateRandomLayout(5, 5);
+  dun1.GetRoom(3,2)->room_type_ = Room::Treasure;
+
+  //dun1.GenerateRandomLayout(0,0);
   std::cout << dun1.toString();
 
   return 1;
