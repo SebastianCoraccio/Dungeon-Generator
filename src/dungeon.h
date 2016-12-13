@@ -7,13 +7,12 @@
 #include <iostream>
 #include "room.h"
 
-class Dungeon
-{
+class Dungeon {
   private:
   int width = 1;
   int height = 1;
 
-  Room** dungeon_grid;
+//  Room **dungeon_grid;
 
 
   void CreateGrid();
@@ -24,8 +23,10 @@ class Dungeon
 
   void CheckPosition(int x_pos, int y_pos);
 
-  public:
+  int Index(int x_pos, int y_pos);
 
+  public:
+  Room **dungeon_grid;
   // Default constructor
   Dungeon();
 
@@ -41,9 +42,6 @@ class Dungeon
   // Create a random dungeon with defined start room
   void GenerateRandomLayout(int start_x, int start_y);
 
-  // Create the adjacent rooms, according to room door chances
-  void CreateBranches(Room*);
-
   // Get the width of the dungeon grid
   int GetWidth();
 
@@ -51,7 +49,7 @@ class Dungeon
   int GetHeight();
 
   // Returns a reference to a room in the dungeon at the position
-  Room* GetRoom(int xpos, int ypos);
+  Room *GetRoom(int xpos, int ypos);
 
   std::string toString();
 };

@@ -5,6 +5,8 @@
 #include <stdlib.h>
 
 #include "room.h"
+#include "empty_room.h"
+#include "start_room.h"
 #include "dungeon.h"
 
 // Default constructor
@@ -25,19 +27,14 @@ Dungeon::Dungeon(int w, int h) {
 // Doing so will be more efficient, and easier to assign x and y values to rooms
 void Dungeon::CreateGrid() {
 
-  dungeon_grid = new Room *[height];
-  for (int i = 0; i < height; ++i) {
-    dungeon_grid[i] = new Room[width];
-  }
+  dungeon_grid = new Room *[width * height];
 
-  // Add x and y locations
   for (int i = 0; i < height; i++) {
     for (int j = 0; j < width; j++) {
-      dungeon_grid[i][j].x_location_ = i;
-      dungeon_grid[i][j].y_location_ = j;
+      dungeon_grid[Index(i, j)] = new EmptyRoom(i, j);
+
     }
   }
-
 }
 
 // Deallocate the dungeon grid
@@ -48,10 +45,8 @@ Dungeon::~Dungeon() {
 // Deallocate the dungeon grid
 void Dungeon::DestroyGrid() {
 
-  for (int i = 0; i < height; ++i) {
-    delete[] dungeon_grid[i];
-  }
   delete[] dungeon_grid;
+
 }
 
 // Get the width of the dungeon grid
@@ -62,9 +57,11 @@ int Dungeon::GetHeight() { return height; }
 
 // Returns a reference to a room in the dungeon at the position
 // Positions in the grid are zero indexed
+
+
 Room *Dungeon::GetRoom(int x_pos, int y_pos) {
   CheckPosition(x_pos, y_pos);
-  return &dungeon_grid[x_pos][y_pos];
+  return dungeon_grid[Index(x_pos, y_pos)];
 }
 
 // Create a random dungeon with a random start room
@@ -72,113 +69,27 @@ void Dungeon::GenerateRandomLayout() {
   srand(time(NULL));
   int start_x = rand() % width;
   int start_y = rand() % height;
-  Generate(start_x, start_y);
+  GenerateRandomLayout(start_x, start_y);
 }
 
 // Create a random dungeon with defined start room
 void Dungeon::GenerateRandomLayout(int start_x, int start_y) {
   CheckPosition(start_x, start_y);
-  Generate(start_x, start_y);
+  dungeon_grid[Index(start_x, start_y)] = new StartRoom(start_x, start_y);
+  //Generate(start_x, start_y);
 }
 
-
-// TODO: Currently not functioning correctly on boundaries
-// TODO: Refactor to include new rooms types
+// TODO: Dungeon generation algorithm
 void Dungeon::Generate(int start_x, int start_y) {
-
-  // Create the start room
-  Room *start_room = &dungeon_grid[start_x][start_y];
-  start_room->room_type_ = (Room::Start);
-  start_room->SetRoomChances(0.95, 0.95, 0.95, 0.95);
-
-  CreateBranches(start_room);
 }
 
-// Create the adjacent rooms, according to room door chances
-void Dungeon::CreateBranches(Room *room) {
-  srand(time(NULL));
-
-  int room_x = room->x_location_;
-  int room_y = room->y_location_;
-
-  // If any of the adjacent rooms are off the grid then set their chance to 0
-  if (room_x == 0) room->north_door_chance_ = 0.0;
-  if (room_x == height - 1) room->south_door_chance_ = 0.0;
-  if (room_y == 0) room->west_door_chance_ = 0.0;
-  if (room_y == width - 1) room->east_door_chance_ = 0.0;
-
-
-  // ----- Northern Branch -----
-  if ((rand() % 100) < (room->north_door_chance_ * 100)) {
-    if (dungeon_grid[room_x - 1][room_y].room_type_ == Room::Empty) {
-      room->northern_room_ = &dungeon_grid[room_x - 1][room_y];
-      dungeon_grid[room_x - 1][room_y].room_type_ = Room::Regular;
-
-      room->northern_room_->SetRoomChances(room->north_door_chance_ - .1,
-                                           room->east_door_chance_ - .5,
-                                           room->west_door_chance_ - .5,
-                                           -1);
-      CreateBranches(room->northern_room_);
-    }
-
-  }
-
-
-  // ----- Eastern Branch -----
-  if ((rand() % 100) < (room->east_door_chance_ * 100)) {
-    if (dungeon_grid[room_x][room_y + 1].room_type_ == Room::Empty) {
-      room->eastern_room_ = &dungeon_grid[room_x][room_y + 1];
-      dungeon_grid[room_x][room_y + 1].room_type_ = Room::Regular;
-
-      room->eastern_room_->SetRoomChances(room->north_door_chance_ - .5,
-                                          room->east_door_chance_ - .1,
-                                          -1,
-                                          room->south_door_chance_ - .5);
-      CreateBranches(room->eastern_room_);
-    }
-
-  }
-
-
-  // ----- Western Branch -----
-  if ((rand() % 100) < (room->west_door_chance_ * 100)) {
-    if (dungeon_grid[room_x][room_y - 1].room_type_ == Room::Empty) {
-      room->western_room_ = &dungeon_grid[room_x][room_y - 1];
-      dungeon_grid[room_x][room_y - 1].room_type_ = Room::Regular;
-
-      room->western_room_->SetRoomChances(room->north_door_chance_ - .5,
-                                          -1,
-                                          room->west_door_chance_ - .1,
-                                          room->south_door_chance_ - .5);
-      CreateBranches(room->western_room_);
-    }
-
-  }
-
-
-  // ----- Southern Branch -----
-  if ((rand() % 100) < (room->south_door_chance_ * 100)) {
-    if (dungeon_grid[room_x + 1][room_y].room_type_ == Room::Empty) {
-      room->southern_room_ = &dungeon_grid[room_x - 1][room_y];
-      dungeon_grid[room_x + 1][room_y].room_type_ = Room::Regular;
-
-      room->southern_room_->SetRoomChances(-1,
-                                           room->east_door_chance_ - .5,
-                                           room->west_door_chance_ - .5,
-                                           room->south_door_chance_ - .1);
-      CreateBranches(room->southern_room_);
-    }
-
-  }
-}
-
-void Dungeon::CheckPosition(int x_pos, int y_pos){
-  if(x_pos >= height || x_pos < 0) {
+void Dungeon::CheckPosition(int x_pos, int y_pos) {
+  if (x_pos >= height || x_pos < 0) {
     std::cerr << "Given X value must be 0 or greater " <<
               "and less than the grid's width.\n";
     exit(1);
   }
-  if(y_pos >= width || y_pos < 0) {
+  if (y_pos >= width || y_pos < 0) {
     std::cerr << "Given Y value must be 0 or greater " <<
               "and less than the grid's height.\n";
     exit(-1);
@@ -192,9 +103,13 @@ std::string Dungeon::toString() {
 
   for (int i = 0; i < height; i++) {
     for (int j = 0; j < width; j++) {
-      dungeon += dungeon_grid[i][j].toString() += " ";
+      dungeon += dungeon_grid[Index(i, j)]->toChar();
+      // Spacing on x axis for readability of output
+      dungeon += " ";
     }
     dungeon += "\n";
   }
   return dungeon;
 }
+
+int Dungeon::Index(int x_pos, int y_pos){ return x_pos + height * y_pos; }
