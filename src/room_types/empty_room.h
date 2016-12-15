@@ -14,15 +14,19 @@ class EmptyRoom : public Room {
   std::string char_representation_ = ".";
 
   EmptyRoom();
+
   EmptyRoom(int x_pos, int y_pos);
 
-   Room **Branch();
+  // Randomly decides if a branch will occur, depending on the generation
+  // chance for the given direction
+  // Returns true if a branch should occur
+  bool Branch(Direction);
 
   // Output information about the room
-   std::string toString();
+  std::string toString();
 
   // Output single character that represents the room type
-   std::string toChar();
+  std::string toChar();
 
 };
 

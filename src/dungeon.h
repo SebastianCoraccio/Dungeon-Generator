@@ -5,7 +5,7 @@
 #define DGNGEN_DUNGEON_H
 
 #include <iostream>
-#include "room.h"
+#include "room_types/room.h"
 
 class Dungeon {
   private:

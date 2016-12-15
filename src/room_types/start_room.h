@@ -7,6 +7,7 @@
 
 #include "room.h"
 
+
 class StartRoom : public Room {
   public:
   std::string char_representation_ = "S";
@@ -15,7 +16,10 @@ class StartRoom : public Room {
 
   StartRoom(int x_pos, int y_pos);
 
-  Room **Branch();
+  // Randomly decides if a branch will occur, depending on the generation
+  // chance for the given direction
+  // Returns true if a branch should occur
+  bool Branch(Direction);
 
   // Output information about the room
   std::string toString();
@@ -23,11 +27,7 @@ class StartRoom : public Room {
   // Output single character that represents the room type
   std::string toChar();
 
-  private:
-  Room* north_room_ = nullptr;
-  Room* east_room_;
-  Room* west_room_;
-  Room* south_room_;
+
 
 };
 

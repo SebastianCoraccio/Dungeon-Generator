@@ -12,8 +12,11 @@ EmptyRoom::EmptyRoom(int x_pos, int y_pos) {
 
 }
 
-Room **EmptyRoom::Branch() {
-  return nullptr;
+// Randomly decides if a branch will occur, depending on the generation
+// chance for the given direction
+// Returns true if a branch should occur
+bool EmptyRoom::Branch(Direction direction) {
+  return true;
 }
 
 // Output information about the room
