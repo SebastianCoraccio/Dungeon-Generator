@@ -18,7 +18,6 @@ StartRoom::StartRoom(int x_pos, int y_pos){
   direction_chances_[WEST] = 0.85;
   direction_chances_[SOUTH] = 0.85;
 
-  srand((unsigned)time(0));
 }
 
 // Randomly decides if a branch will occur, depending on the generation

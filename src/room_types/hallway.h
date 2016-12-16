@@ -1,5 +1,6 @@
 //
-// Created by Sebastian on 12/14/2016.
+// A hallway is a type of room with one entrance and one exit. The exit is
+// across from the entrance.
 //
 
 #ifndef DGNGEN_HALLWAY_H

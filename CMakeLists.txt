@@ -3,5 +3,5 @@ project(dgnGen)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES src/main.cc src/dungeon.h src/room_types/room.h src/dungeon.cc src/room_types/empty_room.h src/room_types/empty_room.cc src/room_types/start_room.cc src/room_types/hallway.h src/room_types/hallway.cc)
+set(SOURCE_FILES src/main.cc src/dungeon.h src/room_types/room.h src/dungeon.cc src/room_types/empty_room.h src/room_types/empty_room.cc src/room_types/start_room.cc src/room_types/hallway.h src/room_types/hallway.cc src/room_types/junction.cc src/room_types/junction.h)
 add_executable(dgnGen ${SOURCE_FILES})

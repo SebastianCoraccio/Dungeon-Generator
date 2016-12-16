@@ -3,12 +3,12 @@
 //
 
 #include <stdlib.h>
-#include <time.h>
 
 #include "room_types/room.h"
 #include "room_types/empty_room.h"
 #include "room_types/start_room.h"
 #include "room_types/hallway.h"
+#include "room_types/junction.h"
 #include "dungeon.h"
 
 // Default constructor
@@ -20,6 +20,7 @@ Dungeon::Dungeon() {
 Dungeon::Dungeon(int w, int h) {
   width = w;
   height = h;
+
 
   CreateGrid();
 }
@@ -57,8 +58,6 @@ int Dungeon::GetHeight() { return height; }
 
 // Returns a reference to a room in the dungeon at the position
 // Positions in the grid are zero indexed
-
-
 Room *Dungeon::GetRoom(int x_pos, int y_pos) {
   CheckPosition(x_pos, y_pos);
   return dungeon_grid[Index(x_pos, y_pos)];
@@ -66,7 +65,7 @@ Room *Dungeon::GetRoom(int x_pos, int y_pos) {
 
 // Create a random dungeon with a random start room
 void Dungeon::GenerateRandomLayout() {
-  srand(time(NULL));
+
   int start_x = rand() % height;
   int start_y = rand() % width;
 //  std::cout << start_x << ", " << start_y << std::endl;
@@ -80,7 +79,7 @@ void Dungeon::GenerateRandomLayout(int start_x, int start_y) {
   Generate(start_x, start_y);
 }
 
-// TODO: Dungeon generation algorithm
+// TODO: Cleanup
 void Dungeon::Generate(int start_x, int start_y) {
 
   Room *room = dungeon_grid[Index(start_x, start_y)];
@@ -92,34 +91,52 @@ void Dungeon::Generate(int start_x, int start_y) {
   int south_x_index = start_x + 1;
 
   if (north_x_index > 0 && room->Branch(Room::NORTH)) {
-    dungeon_grid[Index(north_x_index, start_y)] = new Hallway(north_x_index,
-                                                              start_y,
-                                                              Room::NORTH,
-                                                              room->direction_chances_[Room::NORTH]);
+    if ((rand() % 6) == 0) {
+      dungeon_grid[Index(north_x_index, start_y)] = new Junction(north_x_index, start_y, Room::SOUTH,
+                                                                 room->direction_chances_[Room::NORTH]);
+    } else {
+      dungeon_grid[Index(north_x_index, start_y)] = new Hallway(north_x_index, start_y, Room::NORTH,
+                                                                room->direction_chances_[Room::NORTH]);
+    }
     Generate(north_x_index, start_y);
   }
 
   if (east_y_index < width && room->Branch(Room::EAST)) {
-    dungeon_grid[Index(start_x, east_y_index)] = new Hallway(start_x,
-                                                             east_y_index,
-                                                             Room::EAST,
-                                                             room->direction_chances_[Room::EAST]);
+
+    if ((rand() % 6) == 0) {
+      dungeon_grid[Index(start_x, east_y_index)] = new Junction(start_x, east_y_index, Room::WEST,
+                                                                 room->direction_chances_[Room::EAST]);
+    } else {
+      dungeon_grid[Index(start_x, east_y_index)] = new Hallway(start_x, east_y_index, Room::EAST,
+                                                               room->direction_chances_[Room::EAST]);
+    }
     Generate(start_x, east_y_index);
   }
 
   if (west_y_index > 0 && room->Branch(Room::WEST)) {
-    dungeon_grid[Index(start_x, west_y_index)] = new Hallway(start_x,
-                                                             east_y_index,
-                                                             Room::WEST,
-                                                             room->direction_chances_[Room::WEST]);
+
+    if ((rand() % 6) == 0) {
+      dungeon_grid[Index(start_x, west_y_index)] = new Junction(start_x, west_y_index, Room::WEST,
+                                                                room->direction_chances_[Room::EAST]);
+    } else {
+      dungeon_grid[Index(start_x, west_y_index)] = new Hallway(start_x, west_y_index, Room::WEST,
+                                                               room->direction_chances_[Room::WEST]);
+    }
+
     Generate(start_x, west_y_index);
   }
 
   if (south_x_index < height && room->Branch(Room::SOUTH)) {
-    dungeon_grid[Index(south_x_index, start_y)] = new Hallway(south_x_index,
-                                                              start_y,
-                                                              Room::SOUTH,
-                                                              room->direction_chances_[Room::SOUTH]);
+
+    if ((rand() % 6) == 0) {
+      dungeon_grid[Index(south_x_index, start_y)] = new Junction(south_x_index, start_y, Room::NORTH,
+                                                                 room->direction_chances_[Room::SOUTH]);
+    } else {
+      dungeon_grid[Index(south_x_index, start_y)] = new Hallway(south_x_index, start_y, Room::SOUTH,
+                                                                room->direction_chances_[Room::SOUTH]);
+    }
+
+
     Generate(south_x_index, start_y);
   }
 

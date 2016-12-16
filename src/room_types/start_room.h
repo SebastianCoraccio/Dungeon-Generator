@@ -1,12 +1,13 @@
 //
-// Created by Sebastian on 12/13/2016.
+// A start room is the beginning room of a dungeon. It has equal chances of
+// branching in each direction, assuming the adjacent room is within the
+// boundaries of the dungeon grid.
 //
 
 #ifndef DGNGEN_START_ROOM_H_H
 #define DGNGEN_START_ROOM_H_H
 
 #include "room.h"
-
 
 class StartRoom : public Room {
   public:
@@ -26,7 +27,6 @@ class StartRoom : public Room {
 
   // Output single character that represents the room type
   std::string toChar();
-
 
 
 };

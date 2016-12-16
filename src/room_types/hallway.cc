@@ -13,9 +13,8 @@ Hallway::Hallway(int x_pos, int y_pos, Direction exit, double parent_chance) {
   x_position_ = x_pos;
   y_position_ = y_pos;
 
-  direction_chances_[exit] = parent_chance - 0.1;
+  direction_chances_[exit] = parent_chance - 0.05;
 
-  srand((unsigned) time(0));
 }
 
 // Randomly decides if a branch will occur, depending on the generation
