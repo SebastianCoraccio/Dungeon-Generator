@@ -1,8 +1,5 @@
-//
-// Created by Sebastian on 12/14/2016.
-//
-
 #include "hallway.h"
+#include "../config.h"
 
 Hallway::Hallway() {}
 
@@ -13,7 +10,7 @@ Hallway::Hallway(int x_pos, int y_pos, Direction exit, double parent_chance) {
   x_position_ = x_pos;
   y_position_ = y_pos;
 
-  direction_chances_[exit] = parent_chance - 0.05;
+  direction_chances_[exit] = parent_chance - Config::kHallwayChanceDecay;
 
 }
 

@@ -1,9 +1,3 @@
-//
-// Created by Sebastian on 12/9/2016.
-//
-
-
-
 #ifndef DGNGEN_EMPTY_ROOM_H_H
 #define DGNGEN_EMPTY_ROOM_H_H
 

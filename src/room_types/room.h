@@ -1,6 +1,4 @@
 //
-// Created by Sebastian Coraccio on 12/4/2016.
-//
 // A Room Class created for building dungeons
 //
 

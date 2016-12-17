@@ -1,8 +1,7 @@
 #include <iostream>
 #include "dungeon.h"
+#include "config.h"
 
-const int kGridWidth = 15;
-const int kGridHeight = 15;
 
 int DungeonTest();
 
@@ -15,9 +14,12 @@ int main() {
 
 int DungeonTest() {
 
-  Dungeon dun1 = Dungeon(kGridWidth, kGridHeight);
+  Dungeon dun1 = Dungeon(Config::kGridWidth, Config::kGridHeight);
 
-  dun1.GenerateRandomLayout(7, 7);
+  for(int i = 0; i < 50; i++ )
+    dun1.GenerateRandomLayout();
+
+  dun1.GenerateRandomLayout(Config::kGridWidth / 2, Config::kGridHeight / 2);
 
   std::cout << dun1.toString();
 

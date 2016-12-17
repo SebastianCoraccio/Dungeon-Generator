@@ -1,7 +1,3 @@
-//
-// Created by Sebas on 12/9/2016.
-//
-
 #include "empty_room.h"
 
 EmptyRoom::EmptyRoom() {};
@@ -16,7 +12,7 @@ EmptyRoom::EmptyRoom(int x_pos, int y_pos) {
 // chance for the given direction
 // Returns true if a branch should occur
 bool EmptyRoom::Branch(Direction direction) {
-  return true;
+  std::cerr << "Tried branch on Empty Room\n";
 }
 
 // Output information about the room

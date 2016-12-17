@@ -1,6 +1,8 @@
 //
-// Created by Sebastian Coraccio on 12/4/2016.
+// A dungeon is a grid of rooms. It is created with a width and height.
+// The dungeon can either be manually created room by room, or randomly generated.
 //
+
 #ifndef DGNGEN_DUNGEON_H
 #define DGNGEN_DUNGEON_H
 
@@ -12,14 +14,14 @@ class Dungeon {
   int width = 1;
   int height = 1;
 
-//  Room **dungeon_grid;
-
-
   void CreateGrid();
 
   void DestroyGrid();
 
   void Generate(int start_x, int start_y);
+
+  void CreateBranch(int x_location, int y_location,
+                    double branch_chance, Room::Direction entrance, Room::Direction exit);
 
   void CheckPosition(int x_pos, int y_pos);
 
@@ -41,12 +43,6 @@ class Dungeon {
 
   // Create a random dungeon with defined start room
   void GenerateRandomLayout(int start_x, int start_y);
-
-  // Get the width of the dungeon grid
-  int GetWidth();
-
-  // Get the height of the dungeon grid
-  int GetHeight();
 
   // Returns a reference to a room in the dungeon at the position
   Room *GetRoom(int xpos, int ypos);

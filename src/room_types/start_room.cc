@@ -1,11 +1,7 @@
-//
-// Created by Sebastian on 12/13/2016.
-//
-
 #include "start_room.h"
+#include "../config.h"
 #include <ctime>
 
-std::string char_representation_ = "S";
 
 StartRoom::StartRoom() {}
 
@@ -13,10 +9,13 @@ StartRoom::StartRoom(int x_pos, int y_pos){
   x_position_ = x_pos;
   y_position_ = y_pos;
 
-  direction_chances_[NORTH] = 0.85;
-  direction_chances_[EAST] = 0.85;
-  direction_chances_[WEST] = 0.85;
-  direction_chances_[SOUTH] = 0.85;
+  direction_chances_[NORTH] = Config::kStartBranchChance;
+  direction_chances_[EAST] = Config::kStartBranchChance;
+  direction_chances_[WEST] = Config::kStartBranchChance;
+  direction_chances_[SOUTH] = Config::kStartBranchChance;
+
+  // There should be at least one branch off the start room
+  direction_chances_[rand() % 4] = 1;
 
 }
 

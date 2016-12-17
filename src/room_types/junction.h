@@ -1,5 +1,5 @@
 //
-// A junction is a room type that has an entrance, and 1-3 exits. The number
+// A junction is a room type that has an entrance, and 0-3 exits. The number
 // of exits is randomly decided when the room is created.
 //
 

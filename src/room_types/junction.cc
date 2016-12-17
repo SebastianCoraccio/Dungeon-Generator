@@ -1,8 +1,5 @@
-//
-// Created by Sebas on 12/16/2016.
-//
-
 #include "junction.h"
+#include "../config.h"
 
 Junction::Junction() {}
 
@@ -12,11 +9,15 @@ parent_chance) {
   x_position_ = x_pos;
   y_position_ = y_pos;
 
-  // 50% chance that the exit will have a non-zero chance
-  if(rand() % 2 == 0) direction_chances_[Room::NORTH] = parent_chance - .05;
-  if(rand() % 2 == 0) direction_chances_[Room::EAST] = parent_chance - .05;
-  if(rand() % 2 == 0) direction_chances_[Room::EAST] = parent_chance - .05;
-  if(rand() % 2 == 0) direction_chances_[Room::SOUTH] = parent_chance - .05;
+  // Decide how many branches are possible (0-3)
+  if((rand() % 100) < (Config::kJunctionExitChance * 100.0))
+    direction_chances_[Room::NORTH] = parent_chance - Config::kJunctionChanceDecay;
+  if((rand() % 100) < (Config::kJunctionExitChance * 100.0))
+    direction_chances_[Room::EAST] = parent_chance - Config::kJunctionChanceDecay;
+  if((rand() % 100) < (Config::kJunctionExitChance * 100.0))
+    direction_chances_[Room::EAST] = parent_chance - Config::kJunctionChanceDecay;
+  if((rand() % 100) < (Config::kJunctionExitChance * 100.0))
+    direction_chances_[Room::SOUTH] = parent_chance - Config::kJunctionChanceDecay;
 
   // The entrance direction chance should be set back to 0
   direction_chances_[entrance] = 0;
