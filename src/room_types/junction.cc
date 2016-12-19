@@ -1,8 +1,15 @@
+//
+// A junction is a room type that has an entrance, and 0-3 exits. The number
+// of exits is randomly decided when the room is created.
+//
+
 #include "junction.h"
 #include "../config.h"
 
-Junction::Junction() {}
-
+// Creates a junction. How many exits the room has is decided during
+// construction.
+// Parent chance is the parents chance to branch. It is decremented by some
+// amount defined in the Config class.
 Junction::Junction(int x_pos, int y_pos, Direction entrance, double
 parent_chance) {
 
@@ -31,7 +38,8 @@ bool Junction::Branch(Direction direction) {
   return (rand() % 100) < (direction_chances_[direction] * 100.0);
 }
 
-// Output information about the room
+// Output single character that represents the room type
+// Despite being named 'to Char' it returns a string
 std::string Junction::toString() {
   std::string out = "Junction";
   out += "(x: " + std::to_string(x_position_);
@@ -42,4 +50,5 @@ std::string Junction::toString() {
 }
 
 // Output single character that represents the room type
+// Despite being named 'to Char' it returns a string
 std::string Junction::toChar() { return char_representation_; }

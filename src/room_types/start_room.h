@@ -11,9 +11,6 @@
 
 class StartRoom : public Room {
   public:
-  std::string char_representation_ = "S";
-
-  StartRoom();
 
   StartRoom(int x_pos, int y_pos);
 
@@ -26,8 +23,10 @@ class StartRoom : public Room {
   std::string toString();
 
   // Output single character that represents the room type
+  // Despite being named 'to Char' it returns a string
   std::string toChar();
 
+  std::string char_representation_ = "S";
 
 };
 

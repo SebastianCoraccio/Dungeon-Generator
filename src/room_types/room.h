@@ -1,5 +1,5 @@
 //
-// A Room Class created for building dungeons
+// An abstract Room class. Rooms are used to build dungeons.
 //
 
 #ifndef DGNGEN_ROOM_H
@@ -11,11 +11,13 @@ class Room {
 
   public:
 
+  // Enum used for room direction. A Room has 4 doors, each facing the below
+  // directions
   enum Direction {
-    NORTH,
-    EAST,
-    WEST,
-    SOUTH
+    NORTH = 0,
+    EAST = 1,
+    WEST = 2,
+    SOUTH = 3
   };
 
   // Randomly decides if a branch will occur, depending on the generation
@@ -27,14 +29,19 @@ class Room {
   virtual std::string toString() = 0;
 
   // Output single character that represents the room type
+  // Despite being named 'to Char' it returns a string
   virtual std::string toChar() = 0;
 
   std::string char_representation_;
+
+  // TODO: Decide if this is needed. Unnecessary coupling?
   // x position in a dungeon grid
   int x_position_ = -1;
   // y position in a dungeon grid
   int y_position_ = -1;
 
+  // The chance a room will spawn in the given direction
+  // Index corresponds to enum Direction's numeric value
   double direction_chances_[4];
 };
 

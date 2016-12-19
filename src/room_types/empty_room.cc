@@ -1,7 +1,5 @@
 #include "empty_room.h"
 
-EmptyRoom::EmptyRoom() {};
-
 EmptyRoom::EmptyRoom(int x_pos, int y_pos) {
   x_position_ = x_pos;
   y_position_ = y_pos;

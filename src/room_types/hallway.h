@@ -11,12 +11,11 @@
 class Hallway : public Room {
 
   public:
-  Hallway();
 
-  // Creates a new Hallway. The entrance is relative to the room that the
-  // original branch is from. The only exit is the the room across from the
+  // Creates a new Hallway room. The only exit is the the room across from the
   // entrance
-  // Parent chance is the parents chance to branch
+  // Parent chance is the parents chance to branch. It is decremented by some
+  // amount defined in the Config class.
   Hallway(int x_pos, int y_pos, Direction exit, double parent_chance);
 
   // Randomly decides if a branch will occur, depending on the generation
@@ -28,6 +27,7 @@ class Hallway : public Room {
   std::string toString();
 
   // Output single character that represents the room type
+  // Despite being named 'to Char' it returns a string
   std::string toChar();
 
   std::string char_representation_ = "H";

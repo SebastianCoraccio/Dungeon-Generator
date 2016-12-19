@@ -1,3 +1,7 @@
+//
+// Empty rooms represent rooms in a dungeon that do not exist.
+//
+
 #ifndef DGNGEN_EMPTY_ROOM_H_H
 #define DGNGEN_EMPTY_ROOM_H_H
 
@@ -5,9 +9,6 @@
 
 class EmptyRoom : public Room {
   public:
-  std::string char_representation_ = ".";
-
-  EmptyRoom();
 
   EmptyRoom(int x_pos, int y_pos);
 
@@ -20,7 +21,10 @@ class EmptyRoom : public Room {
   std::string toString();
 
   // Output single character that represents the room type
+  // Despite being named 'to Char' it returns a string
   std::string toChar();
+
+  std::string char_representation_ = ".";
 
 };
 

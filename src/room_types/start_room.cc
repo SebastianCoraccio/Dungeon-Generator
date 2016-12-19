@@ -1,9 +1,12 @@
+//
+// A start room is the beginning room of a dungeon. It has equal chances of
+// branching in each direction, assuming the adjacent room is within the
+// boundaries of the dungeon grid.
+//
+
 #include "start_room.h"
 #include "../config.h"
 #include <ctime>
-
-
-StartRoom::StartRoom() {}
 
 StartRoom::StartRoom(int x_pos, int y_pos){
   x_position_ = x_pos;

@@ -1,3 +1,10 @@
+//
+// Due to not finding a good built in way to handle config settings in C++
+// this class was created. Settings relating to probabilities for room creation
+// and dungeon creation are saved here. If you have a better solution let me
+// know.
+//
+
 #ifndef DGNGEN_CONFIG_H
 #define DGNGEN_CONFIG_H
 

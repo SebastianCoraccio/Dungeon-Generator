@@ -11,11 +11,13 @@
 class Junction : public Room {
 
   public:
-  Junction();
 
-
+  // Creates a junction. How many exits the room has is decided during
+  // construction.
+  // Parent chance is the parents chance to branch. It is decremented by some
+  // amount defined in the Config class.
   Junction(int x_pos, int y_pos, Direction entrance, double parent_chance);
-
+  
   // Randomly decides if a branch will occur, depending on the branch
   // chance for the given direction
   // Returns true if a branch should occur
@@ -25,6 +27,7 @@ class Junction : public Room {
   std::string toString();
 
   // Output single character that represents the room type
+  // Despite being named 'to Char' it returns a string
   std::string toChar();
 
   std::string char_representation_ = "J";

@@ -1,19 +1,22 @@
+//
+// A dungeon is a grid of rooms. It is created with a width and height.
+// The dungeon can either be manually created room by room, or randomly generated.
+//
+
 #include <stdlib.h>
 
+
+#include "config.h"
+#include "dungeon.h"
 #include "room_types/room.h"
 #include "room_types/empty_room.h"
 #include "room_types/start_room.h"
 #include "room_types/hallway.h"
 #include "room_types/junction.h"
-#include "dungeon.h"
-#include "config.h"
 
-// Default constructor
-Dungeon::Dungeon() {
-  CreateGrid();
-}
 
-// Creates a dungeon grid of size X by Y
+
+// Creates a dungeon grid of size w by h
 Dungeon::Dungeon(int w, int h) {
   width = w;
   height = h;
@@ -52,65 +55,69 @@ Room *Dungeon::GetRoom(int x_pos, int y_pos) {
 }
 
 // Create a random dungeon with a random start room
-void Dungeon::GenerateRandomLayout() {
+void Dungeon::GenerateLayout() {
 
   int start_x = rand() % height;
   int start_y = rand() % width;
 
-  GenerateRandomLayout(start_x, start_y);
+  GenerateLayout(start_x, start_y);
 }
 
 // Create a random dungeon with defined start room
-void Dungeon::GenerateRandomLayout(int start_x, int start_y) {
+void Dungeon::GenerateLayout(int start_x, int start_y) {
   CheckPosition(start_x, start_y);
   dungeon_grid[Index(start_x, start_y)] = new StartRoom(start_x, start_y);
-  Generate(start_x, start_y);
+
+  // Begin branching at start room location
+  DoBranching(start_x, start_y);
 }
 
-//
-void Dungeon::Generate(int start_x, int start_y) {
+// Recursively create rooms branching from the given room.
+// Stops when a room does not branch due to chance, or the grid is completely
+// filled with rooms.
+void Dungeon::DoBranching(int room_x, int room_y) {
 
-  Room *room = dungeon_grid[Index(start_x, start_y)];
+  Room *room = dungeon_grid[Index(room_x, room_y)];
 
   // Find index of adjacent rooms
-  int north_x_index = start_x - 1;
-  int east_y_index = start_y + 1;
-  int west_y_index = start_y - 1;
-  int south_x_index = start_x + 1;
+  int north_x_index = room_x - 1;
+  int east_y_index = room_y + 1;
+  int west_y_index = room_y - 1;
+  int south_x_index = room_x + 1;
 
   // North Branch
   if (north_x_index > 0 && room->Branch(Room::NORTH)) {
-    CreateBranch(north_x_index, start_y,
-                 room->direction_chances_[Room::NORTH], Room::SOUTH, Room::NORTH);
-    Generate(north_x_index, start_y);
+    CreateRoom(north_x_index, room_y,
+               room->direction_chances_[Room::NORTH], Room::SOUTH, Room::NORTH);
+    DoBranching(north_x_index, room_y);
   }
 
   // East Branch
   if (east_y_index < width && room->Branch(Room::EAST)) {
-    CreateBranch(start_x, east_y_index,
-                 room->direction_chances_[Room::EAST], Room::WEST, Room::EAST);
-    Generate(start_x, east_y_index);
+    CreateRoom(room_x, east_y_index,
+               room->direction_chances_[Room::EAST], Room::WEST, Room::EAST);
+    DoBranching(room_x, east_y_index);
   }
 
   // West Branch
   if (west_y_index > 0 && room->Branch(Room::WEST)) {
-    CreateBranch(start_x, west_y_index,
-                 room->direction_chances_[Room::WEST], Room::EAST, Room::WEST);
-    Generate(start_x, west_y_index);
+    CreateRoom(room_x, west_y_index,
+               room->direction_chances_[Room::WEST], Room::EAST, Room::WEST);
+    DoBranching(room_x, west_y_index);
   }
 
   // South Branch
   if (south_x_index < height && room->Branch(Room::SOUTH)) {
-    CreateBranch(south_x_index, start_y,
-                 room->direction_chances_[Room::SOUTH], Room::NORTH, Room::SOUTH);
-    Generate(south_x_index, start_y);
+    CreateRoom(south_x_index, room_y,
+               room->direction_chances_[Room::SOUTH], Room::NORTH, Room::SOUTH);
+    DoBranching(south_x_index, room_y);
   }
 
 }
 
 // Creates the branch room. Whether it is a junction of a hallway is decided randomly.
-void Dungeon::CreateBranch(int x_location, int y_location,
-                           double branch_chance, Room::Direction entrance, Room::Direction exit){
+void Dungeon::CreateRoom(int x_location, int y_location,
+                         double branch_chance, Room::Direction entrance, Room::Direction exit){
 
   if((rand() % 100) < (Config::kCreateJunction * 100.0))
     dungeon_grid[Index(x_location, y_location)] = new Junction(x_location, y_location,
@@ -120,6 +127,7 @@ void Dungeon::CreateBranch(int x_location, int y_location,
                                                               exit, branch_chance);
 }
 
+// Checks that the x and y position are within the dungeon grid
 void Dungeon::CheckPosition(int x_pos, int y_pos) {
   if (x_pos >= height || x_pos < 0) {
     std::cerr << "Given X value must be 0 or greater " <<
@@ -134,6 +142,7 @@ void Dungeon::CheckPosition(int x_pos, int y_pos) {
 
 }
 
+// Outputs the dungeon layout using each rooms single character representation
 std::string Dungeon::toString() {
 
   std::string dungeon = "";

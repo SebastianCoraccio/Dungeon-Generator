@@ -1,11 +1,15 @@
+//
+// A hallway is a type of room with one entrance and one exit. The exit is
+// across from the entrance.
+//
+
 #include "hallway.h"
 #include "../config.h"
 
-Hallway::Hallway() {}
-
-// Creates a new Hallway. The entrance is relative to the room that the
-// original branch is from. The only exit is the the room across from the
+// Creates a new Hallway room. The only exit is the the room across from the
 // entrance
+// Parent chance is the parents chance to branch. It is decremented by some
+// amount defined in the Config class.
 Hallway::Hallway(int x_pos, int y_pos, Direction exit, double parent_chance) {
   x_position_ = x_pos;
   y_position_ = y_pos;
@@ -32,4 +36,5 @@ std::string Hallway::toString() {
 }
 
 // Output single character that represents the room type
+// Despite being named 'to Char' it returns a string
 std::string Hallway::toChar() { return char_representation_; }

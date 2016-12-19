@@ -14,39 +14,45 @@ class Dungeon {
   int width = 1;
   int height = 1;
 
+  // Allocates the dungeon grid into a single chunk of memory.
   void CreateGrid();
 
+  // Deallocate the dungeon grid
   void DestroyGrid();
 
-  void Generate(int start_x, int start_y);
+  // Recursively create rooms branching from the given room.
+  // Stops when a room does not branch due to chance, or the grid is completely
+  // filled with rooms.
+  void DoBranching(int room_x, int room_y);
 
-  void CreateBranch(int x_location, int y_location,
-                    double branch_chance, Room::Direction entrance, Room::Direction exit);
+  // Creates the branch room. Whether it is a junction of a hallway is decided randomly.
+  void CreateRoom(int x_location, int y_location,
+                  double branch_chance, Room::Direction entrance, Room::Direction exit);
 
+  // Checks that the x and y position are within the dungeon grid
   void CheckPosition(int x_pos, int y_pos);
 
   int Index(int x_pos, int y_pos);
 
   public:
   Room **dungeon_grid;
-  // Default constructor
-  Dungeon();
 
   // Creates a dungeon grid of size width by height
   Dungeon(int width, int height);
 
-  // Deallocate the dungeon grid
+  // Dungeon Destructor
   ~Dungeon();
 
   // Create a random dungeon with a random start room
-  void GenerateRandomLayout();
+  void GenerateLayout();
 
   // Create a random dungeon with defined start room
-  void GenerateRandomLayout(int start_x, int start_y);
+  void GenerateLayout(int start_x, int start_y);
 
   // Returns a reference to a room in the dungeon at the position
   Room *GetRoom(int xpos, int ypos);
 
+  // Outputs the dungeon layout using each rooms single character representation
   std::string toString();
 };
 
