@@ -16,9 +16,6 @@ int DungeonTest() {
 
   Dungeon dun1 = Dungeon(Config::kGridWidth, Config::kGridHeight);
 
-  for(int i = 0; i < 50; i++ )
-    dun1.GenerateLayout();
-
   dun1.GenerateLayout(Config::kGridWidth / 2, Config::kGridHeight / 2);
 
   std::cout << dun1.toString();

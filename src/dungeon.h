@@ -35,7 +35,7 @@ class Dungeon {
   int Index(int x_pos, int y_pos);
 
   public:
-  Room **dungeon_grid;
+  Room **dungeon_grid_;
 
   // Creates a dungeon grid of size width by height
   Dungeon(int width, int height);
