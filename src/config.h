@@ -21,8 +21,8 @@ class Config {
 
   // When a new room is branched, the new rooms chance to branch is reduced by
   // this amount
-  constexpr static double kHallwayChanceDecay = 0.1;
-  constexpr static double kJunctionChanceDecay = 0.1;
+  constexpr static double kHallwayChanceDecay = 0.025;
+  constexpr static double kJunctionChanceDecay = 0.025;
 
   // When a junction is created it has 0-3 room exits. Each direction has a
   // random chance to have a non-zero chance to branch

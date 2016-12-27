@@ -57,13 +57,24 @@ void Dungeon::GenerateLayout(int start_x, int start_y) {
   dungeon_grid_[Index(start_x, start_y)] = new StartRoom(start_x, start_y);
 
   // Begin branching at start room location
-  DoBranching(start_x, start_y);
+  DoBranching(start_x, start_y, 0);
+
+  dungeon_grid_[Index(boss_x_pos_, boss_y_pos_)] = new StartRoom(boss_x_pos_,
+                                                                 boss_y_pos_);
+  std::cout << "The relative depth of the boss room is "
+            << boss_depth_ << std::endl;
 }
 
 // Recursively create rooms branching from the given room.
 // Stops when a room does not branch due to chance, or the grid is completely
 // filled with rooms.
-void Dungeon::DoBranching(int room_x, int room_y) {
+void Dungeon::DoBranching(int room_x, int room_y, int depth) {
+
+  if(depth > boss_depth_){
+    boss_depth_ = depth;
+    boss_x_pos_ = room_x;
+    boss_y_pos_ = room_y;
+  }
 
   Room *room = dungeon_grid_[Index(room_x, room_y)];
 
@@ -79,7 +90,7 @@ void Dungeon::DoBranching(int room_x, int room_y) {
     if (dungeon_grid_[Index(north_x_index, room_y)] == nullptr) {
       CreateRoom(north_x_index, room_y,
                  room->direction_chances_[Room::NORTH], Room::SOUTH, Room::NORTH);
-      DoBranching(north_x_index, room_y);
+      DoBranching(north_x_index, room_y, depth + 1);
     }
   }
 
@@ -89,7 +100,7 @@ void Dungeon::DoBranching(int room_x, int room_y) {
     if (dungeon_grid_[Index(room_x, east_y_index)] == nullptr) {
       CreateRoom(room_x, east_y_index,
                  room->direction_chances_[Room::EAST], Room::WEST, Room::EAST);
-      DoBranching(room_x, east_y_index);
+      DoBranching(room_x, east_y_index, depth + 1);
     }
   }
 
@@ -99,7 +110,7 @@ void Dungeon::DoBranching(int room_x, int room_y) {
     if (dungeon_grid_[Index(room_x, west_y_index)] == nullptr) {
       CreateRoom(room_x, west_y_index,
                  room->direction_chances_[Room::WEST], Room::EAST, Room::WEST);
-      DoBranching(room_x, west_y_index);
+      DoBranching(room_x, west_y_index, depth + 1);
     }
   }
 
@@ -109,7 +120,7 @@ void Dungeon::DoBranching(int room_x, int room_y) {
     if (dungeon_grid_[Index(south_x_index, room_y)] == nullptr) {
       CreateRoom(south_x_index, room_y,
                  room->direction_chances_[Room::SOUTH], Room::NORTH, Room::SOUTH);
-      DoBranching(south_x_index, room_y);
+      DoBranching(south_x_index, room_y, depth + 1);
     }
   }
 

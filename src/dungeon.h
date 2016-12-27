@@ -14,6 +14,11 @@ class Dungeon {
   int width = 1;
   int height = 1;
 
+  //Location of the exit room, and its depth relative to the start room
+  int boss_x_pos_ = 0;
+  int boss_y_pos_ = 0;
+  int boss_depth_ = 0;
+
   // Allocates the dungeon grid into a single chunk of memory.
   void CreateGrid();
 
@@ -23,7 +28,7 @@ class Dungeon {
   // Recursively create rooms branching from the given room.
   // Stops when a room does not branch due to chance, or the grid is completely
   // filled with rooms.
-  void DoBranching(int room_x, int room_y);
+  void DoBranching(int room_x, int room_y, int depth);
 
   // Creates the branch room. Whether it is a junction of a hallway is decided randomly.
   void CreateRoom(int x_location, int y_location,

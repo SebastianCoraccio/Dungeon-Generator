@@ -7,6 +7,7 @@ int DungeonTest();
 
 int main() {
   unsigned seed = time(0);
+
   std::cout << "Seed: " << seed << std::endl;
   srand(seed);
   DungeonTest();
