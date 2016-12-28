@@ -1,5 +1,6 @@
 #include <iostream>
 #include "dungeon.h"
+#include "dungeon_drawer.h"
 #include "config.h"
 
 bool DO_DEBUGGING = false;
@@ -9,21 +10,29 @@ int DungeonTest();
 int main(int argc, char *argv[]) {
 
   if (argc == 2) {
-    if(argv[1])
+    if (argv[1])
       DO_DEBUGGING = true;
   }
 
   unsigned seed = time(0);
   std::cout << "Seed: " << seed << std::endl;
   srand(seed);
-  DungeonTest();
+  //DungeonTest();
+
+  DungeonDrawer dd = DungeonDrawer(Config::kGridWidth, Config::kGridHeight);
+  dd.dungeon_->GenerateLayout();
+  dd.dungeon_->GenerateLayout();
+  dd.dungeon_->GenerateLayout();
+  std::cout << dd.dungeon_->toString();
+  dd.PrintToFile();
+
 }
 
 int DungeonTest() {
 
   Dungeon dun1 = Dungeon(Config::kGridWidth, Config::kGridHeight);
 
-  dun1.GenerateLayout(Config::kGridWidth / 2, Config::kGridHeight / 2);
+  dun1.GenerateLayout(Config::kGridHeight / 2, Config::kGridWidth / 2);
 
   std::cout << dun1.toString();
 
@@ -34,7 +43,7 @@ int DungeonTest() {
     std::cout << "\nEnter x position:";
     std::cin >> x_pos;
 
-    if(x_pos == -1)
+    if (x_pos == -1)
       return 1;
 
     std::cout << "Enter y position:";

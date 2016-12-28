@@ -25,7 +25,7 @@ Hallway::Hallway(int x_pos, int y_pos, Direction entrance,
 // chance for the given direction
 // Returns true if a branch should occur
 bool Hallway::Branch(Direction direction) {
-  return(rand() % 100) < (direction_chances_[direction] * 100.0);
+  return (rand() % 100) < (direction_chances_[direction] * 100.0);
 }
 
 // Output information about the room
@@ -35,13 +35,13 @@ std::string Hallway::toString() {
   out += ", y: " + std::to_string(y_position_);
   out += ") Has doors:{\n";
 
-  if(has_door_[NORTH])
+  if (has_door_[NORTH])
     out += "North\n";
-  if(has_door_[EAST])
+  if (has_door_[EAST])
     out += "East\n";
-  if(has_door_[WEST])
+  if (has_door_[WEST])
     out += "West\n";
-  if(has_door_[SOUTH])
+  if (has_door_[SOUTH])
     out += "South\n";
 
   out += "}";

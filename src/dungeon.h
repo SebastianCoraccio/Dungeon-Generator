@@ -11,8 +11,8 @@
 
 class Dungeon {
   private:
-  int width = 1;
-  int height = 1;
+  int width_ = 1;
+  int height_ = 1;
 
   //Location of the exit room, and its depth relative to the start room
   int boss_x_pos_ = 0;
@@ -33,7 +33,8 @@ class Dungeon {
 
   // Creates the branch room. Whether it is a junction of a hallway is decided randomly.
   void CreateRoom(int x_location, int y_location,
-                  double branch_chance, Room::Direction entrance, Room::Direction exit);
+                  double branch_chance, Room::Direction entrance,
+                  Room::Direction exit);
 
   // Checks that the x and y position are within the dungeon grid
   void CheckPosition(int x_pos, int y_pos);
@@ -48,6 +49,12 @@ class Dungeon {
 
   // Dungeon Destructor
   ~Dungeon();
+
+  // Get the dungeons width
+  int GetWidth();
+
+  // Get the dungeons height
+  int GetHeight();
 
   // Create a random dungeon with a random start room
   void GenerateLayout();
