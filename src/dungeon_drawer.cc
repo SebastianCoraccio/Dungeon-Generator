@@ -8,9 +8,10 @@
 #include <fstream>
 #include "dungeon.h"
 #include "dungeon_drawer.h"
+#include "room_types/room.h"
 
 // Used to chance the size of the output file
-int kScale = 40;
+int kScale = 30;
 
 // Creates a dungeon drawer, and a new dungeon of width by height
 DungeonDrawer::DungeonDrawer(int width, int height) {
@@ -29,30 +30,29 @@ std::string DungeonDrawer::ConvertRow(int x_pos) {
       for (int j = 0; j < kScale; j++) {
         // If the room is null then it will not get colored in
         if (dungeon_->GetRoom(x_pos, i) == nullptr) {
-          room_to_string += std::to_string(255);
-
+          room_to_string += std::to_string(240);
         } else {
           // Checks if the current pixel to be output is on the border of a room
           if (h < kScale * .1 || h > kScale * .9 ||
               j < kScale * .1 || j > kScale * .9) {
             // North Doorways
             if (h < kScale * .1 && j > kScale * .3 && j < kScale * .7 &&
-                dungeon_->GetRoom(x_pos, i)->has_door_[0]) {
+                dungeon_->GetRoom(x_pos, i)->has_door_[Room::NORTH]) {
               room_to_string += std::to_string(200);
             }
             // South Doorways
             else if (h > kScale * .9 && j > kScale * .3 && j < kScale * .7 &&
-                     dungeon_->GetRoom(x_pos, i)->has_door_[3]) {
+                     dungeon_->GetRoom(x_pos, i)->has_door_[Room::SOUTH]) {
               room_to_string += std::to_string(200);
             }
             // East Doorways
             else if (j > kScale * .1 && h > kScale * .3 && h < kScale * .7 &&
-                     dungeon_->GetRoom(x_pos, i)->has_door_[1]) {
+                     dungeon_->GetRoom(x_pos, i)->has_door_[Room::EAST]) {
               room_to_string += std::to_string(200);
             }
-            // East Doorways
+            // West Doorways
             else if (j < kScale * .9 && h > kScale * .3 && h < kScale * .7 &&
-                     dungeon_->GetRoom(x_pos, i)->has_door_[2]) {
+                     dungeon_->GetRoom(x_pos, i)->has_door_[Room::WEST]) {
               room_to_string += std::to_string(200);
             } else {
               // If the current pixel to be output is not a doorway then it is

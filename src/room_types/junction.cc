@@ -16,6 +16,11 @@ parent_chance) {
   x_position_ = x_pos;
   y_position_ = y_pos;
 
+  has_door_[NORTH] = false;
+  has_door_[EAST] = false;
+  has_door_[WEST] = false;
+  has_door_[SOUTH] = false;
+
   has_door_[entrance] = true;
 
   // Decide how many branches are possible (0-3)

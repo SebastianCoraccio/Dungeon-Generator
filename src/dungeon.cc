@@ -91,7 +91,7 @@ void Dungeon::DoBranching(int room_x, int room_y, int depth) {
   int south_x_index = room_x + 1;
 
   // North Branch
-  if (north_x_index > 0 && room->Branch(Room::NORTH)) {
+  if (north_x_index >= 0 && room->Branch(Room::NORTH)) {
     // Only create a room in the adjacent spot if no room currently exists
     if (dungeon_grid_[Index(north_x_index, room_y)] == nullptr) {
       CreateRoom(north_x_index, room_y,
@@ -99,6 +99,18 @@ void Dungeon::DoBranching(int room_x, int room_y, int depth) {
                  Room::NORTH);
       room->has_door_[Room::NORTH] = true;
       DoBranching(north_x_index, room_y, depth + 1);
+    }
+  }
+
+  // South Branch
+  if (south_x_index < height_ && room->Branch(Room::SOUTH)) {
+    // Only create a room in the adjacent spot if no room currently exists
+    if (dungeon_grid_[Index(south_x_index, room_y)] == nullptr) {
+      CreateRoom(south_x_index, room_y,
+                 room->direction_chances_[Room::SOUTH], Room::NORTH,
+                 Room::SOUTH);
+      room->has_door_[Room::SOUTH] = true;
+      DoBranching(south_x_index, room_y, depth + 1);
     }
   }
 
@@ -114,7 +126,7 @@ void Dungeon::DoBranching(int room_x, int room_y, int depth) {
   }
 
   // West Branch
-  if (west_y_index > 0 && room->Branch(Room::WEST)) {
+  if (west_y_index >= 0 && room->Branch(Room::WEST)) {
     // Only create a room in the adjacent spot if no room currently exists
     if (dungeon_grid_[Index(room_x, west_y_index)] == nullptr) {
       CreateRoom(room_x, west_y_index,
@@ -124,17 +136,7 @@ void Dungeon::DoBranching(int room_x, int room_y, int depth) {
     }
   }
 
-  // South Branch
-  if (south_x_index < height_ && room->Branch(Room::SOUTH)) {
-    // Only create a room in the adjacent spot if no room currently exists
-    if (dungeon_grid_[Index(south_x_index, room_y)] == nullptr) {
-      CreateRoom(south_x_index, room_y,
-                 room->direction_chances_[Room::SOUTH], Room::NORTH,
-                 Room::SOUTH);
-      room->has_door_[Room::SOUTH] = true;
-      DoBranching(south_x_index, room_y, depth + 1);
-    }
-  }
+
 
 }
 
@@ -161,12 +163,12 @@ void Dungeon::CreateRoom(int x_location, int y_location,
 void Dungeon::CheckPosition(int x_pos, int y_pos) {
   if (x_pos >= height_ || x_pos < 0) {
     std::cerr << "Given X value must be 0 or greater " <<
-              "and less than the grid's width_.\n";
+              "and less than the grid's width.\n";
     exit(1);
   }
   if (y_pos >= width_ || y_pos < 0) {
     std::cerr << "Given Y value must be 0 or greater " <<
-              "and less than the grid's height_.\n";
+              "and less than the grid's height.\n";
     exit(-1);
   }
 

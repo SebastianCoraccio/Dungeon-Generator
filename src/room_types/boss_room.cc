@@ -8,6 +8,11 @@
 BossRoom::BossRoom(int x_pos, int y_pos) {
   x_position_ = x_pos;
   y_position_ = y_pos;
+
+  has_door_[NORTH] = false;
+  has_door_[EAST] = false;
+  has_door_[WEST] = false;
+  has_door_[SOUTH] = false;
 }
 
 // Randomly decides if a branch will occur, depending on the generation

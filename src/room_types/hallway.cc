@@ -15,6 +15,11 @@ Hallway::Hallway(int x_pos, int y_pos, Direction entrance,
   x_position_ = x_pos;
   y_position_ = y_pos;
 
+  has_door_[NORTH] = false;
+  has_door_[EAST] = false;
+  has_door_[WEST] = false;
+  has_door_[SOUTH] = false;
+
   has_door_[entrance] = true;
 
   direction_chances_[exit] = parent_chance - Config::kHallwayChanceDecay;

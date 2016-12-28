@@ -6,6 +6,7 @@
 bool DO_DEBUGGING = false;
 
 int DungeonTest();
+unsigned int hash(unsigned int x);
 
 int main(int argc, char *argv[]) {
 
@@ -15,16 +16,35 @@ int main(int argc, char *argv[]) {
   }
 
   unsigned seed = time(0);
+  seed = hash(seed);
   std::cout << "Seed: " << seed << std::endl;
   srand(seed);
+  for(int i = 0; i < 10000; i++){
+    rand();
+  }
   //DungeonTest();
 
-  DungeonDrawer dd = DungeonDrawer(Config::kGridWidth, Config::kGridHeight);
-  dd.dungeon_->GenerateLayout();
-  dd.dungeon_->GenerateLayout();
-  dd.dungeon_->GenerateLayout();
+  DungeonDrawer dd = DungeonDrawer(12,10);
+  dd.dungeon_->GenerateLayout(10/2, 12/2);
   std::cout << dd.dungeon_->toString();
   dd.PrintToFile();
+
+  int x_pos = 1;
+  int y_pos = 1;
+
+  while (DO_DEBUGGING) {
+    std::cout << "\nEnter x position:";
+    std::cin >> x_pos;
+
+    if (x_pos == -1)
+      return 1;
+
+    std::cout << "Enter y position:";
+    std::cin >> y_pos;
+
+    std::cout << std::endl << dd.dungeon_->toString();
+    std::cout << std::endl << dd.dungeon_->GetRoom(x_pos, y_pos)->toString();
+  }
 
 }
 
@@ -54,4 +74,11 @@ int DungeonTest() {
   }
 
   return 1;
+}
+
+unsigned int hash(unsigned int x) {
+  x = ((x >> 16) ^ x) * 0x45d9f3b;
+  x = ((x >> 16) ^ x) * 0x45d9f3b;
+  x = (x >> 16) ^ x;
+  return x;
 }
