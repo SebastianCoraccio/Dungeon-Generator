@@ -34,7 +34,18 @@ std::string StartRoom::toString(){
   std::string out = "StartRoom";
   out += "(x: " + std::to_string(x_position_);
   out += ", y: " + std::to_string(y_position_);
-  out += ") ";
+  out += ") Has doors:{\n";
+
+  if(has_door_[NORTH])
+    out += "North\n";
+  if(has_door_[EAST])
+    out += "East\n";
+  if(has_door_[WEST])
+    out += "West\n";
+  if(has_door_[SOUTH])
+    out += "South\n";
+
+  out += "}";
 
   return out;
 }

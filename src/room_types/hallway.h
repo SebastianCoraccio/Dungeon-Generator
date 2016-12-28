@@ -16,7 +16,8 @@ class Hallway : public Room {
   // entrance
   // Parent chance is the parents chance to branch. It is decremented by some
   // amount defined in the Config class.
-  Hallway(int x_pos, int y_pos, Direction exit, double parent_chance);
+  Hallway(int x_pos, int y_pos, Direction entrance,
+          Direction exit, double parent_chance);
 
   // Randomly decides if a branch will occur, depending on the generation
   // chance for the given direction

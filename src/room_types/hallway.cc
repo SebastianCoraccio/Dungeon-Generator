@@ -10,9 +10,12 @@
 // entrance
 // Parent chance is the parents chance to branch. It is decremented by some
 // amount defined in the Config class.
-Hallway::Hallway(int x_pos, int y_pos, Direction exit, double parent_chance) {
+Hallway::Hallway(int x_pos, int y_pos, Direction entrance,
+                 Direction exit, double parent_chance) {
   x_position_ = x_pos;
   y_position_ = y_pos;
+
+  has_door_[entrance] = true;
 
   direction_chances_[exit] = parent_chance - Config::kHallwayChanceDecay;
 
@@ -30,7 +33,18 @@ std::string Hallway::toString() {
   std::string out = "Hallway";
   out += "(x: " + std::to_string(x_position_);
   out += ", y: " + std::to_string(y_position_);
-  out += ") ";
+  out += ") Has doors:{\n";
+
+  if(has_door_[NORTH])
+    out += "North\n";
+  if(has_door_[EAST])
+    out += "East\n";
+  if(has_door_[WEST])
+    out += "West\n";
+  if(has_door_[SOUTH])
+    out += "South\n";
+
+  out += "}";
 
   return out;
 }

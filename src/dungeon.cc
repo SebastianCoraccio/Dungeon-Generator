@@ -11,6 +11,7 @@
 #include "room_types/start_room.h"
 #include "room_types/hallway.h"
 #include "room_types/junction.h"
+#include "room_types/boss_room.h"
 
 // Creates a dungeon grid of size w by h
 Dungeon::Dungeon(int w, int h) {
@@ -59,10 +60,9 @@ void Dungeon::GenerateLayout(int start_x, int start_y) {
   // Begin branching at start room location
   DoBranching(start_x, start_y, 0);
 
-  dungeon_grid_[Index(boss_x_pos_, boss_y_pos_)] = new StartRoom(boss_x_pos_,
-                                                                 boss_y_pos_);
-  std::cout << "The relative depth of the boss room is "
-            << boss_depth_ << std::endl;
+  dungeon_grid_[Index(boss_x_pos_, boss_y_pos_)] = new BossRoom(boss_x_pos_,
+                                                                boss_y_pos_);
+
 }
 
 // Recursively create rooms branching from the given room.
@@ -91,6 +91,7 @@ void Dungeon::DoBranching(int room_x, int room_y, int depth) {
       CreateRoom(north_x_index, room_y,
                  room->direction_chances_[Room::NORTH], Room::SOUTH, Room::NORTH);
       DoBranching(north_x_index, room_y, depth + 1);
+      room->has_door_[Room::NORTH] = true;
     }
   }
 
@@ -101,6 +102,7 @@ void Dungeon::DoBranching(int room_x, int room_y, int depth) {
       CreateRoom(room_x, east_y_index,
                  room->direction_chances_[Room::EAST], Room::WEST, Room::EAST);
       DoBranching(room_x, east_y_index, depth + 1);
+      room->has_door_[Room::EAST] = true;
     }
   }
 
@@ -111,6 +113,7 @@ void Dungeon::DoBranching(int room_x, int room_y, int depth) {
       CreateRoom(room_x, west_y_index,
                  room->direction_chances_[Room::WEST], Room::EAST, Room::WEST);
       DoBranching(room_x, west_y_index, depth + 1);
+      room->has_door_[Room::WEST] = true;
     }
   }
 
@@ -121,21 +124,29 @@ void Dungeon::DoBranching(int room_x, int room_y, int depth) {
       CreateRoom(south_x_index, room_y,
                  room->direction_chances_[Room::SOUTH], Room::NORTH, Room::SOUTH);
       DoBranching(south_x_index, room_y, depth + 1);
+      room->has_door_[Room::SOUTH] = true;
     }
   }
 
 }
 
-// Creates the branch room. Whether it is a junction of a hallway is decided randomly.
+// Creates the branch room. Whether it is a junction of a hallway is
+// decided randomly.
 void Dungeon::CreateRoom(int x_location, int y_location,
-                         double branch_chance, Room::Direction entrance, Room::Direction exit) {
+                         double branch_chance, Room::Direction entrance,
+                         Room::Direction exit) {
 
   if ((rand() % 100) < (Config::kCreateJunction * 100.0))
-    dungeon_grid_[Index(x_location, y_location)] = new Junction(x_location, y_location,
-                                                                entrance, branch_chance);
+    dungeon_grid_[Index(x_location, y_location)] = new Junction(x_location,
+                                                                y_location,
+                                                                entrance,
+                                                                branch_chance);
   else
-    dungeon_grid_[Index(x_location, y_location)] = new Hallway(x_location, y_location,
-                                                               exit, branch_chance);
+    dungeon_grid_[Index(x_location, y_location)] = new Hallway(x_location,
+                                                               y_location,
+                                                               entrance,
+                                                               exit,
+                                                               branch_chance);
 }
 
 // Checks that the x and y position are within the dungeon grid
@@ -156,8 +167,18 @@ void Dungeon::CheckPosition(int x_pos, int y_pos) {
 // Outputs the dungeon layout using each rooms single character representation
 std::string Dungeon::toString() {
 
-  std::string dungeon = "";
+  std::string dungeon = "   ";
+  for(int i = 0; i < width; i++)
+    dungeon += std::to_string(i / 10) + " ";
+  dungeon += "\n   ";
+
+  for(int i = 0; i < width; i++)
+    dungeon += std::to_string(i % 10) + " ";
+  dungeon += "\n";
+
   for (int i = 0; i < height; i++) {
+    dungeon += std::to_string(i / 10) + std::to_string(i % 10) + " ";
+
     for (int j = 0; j < width; j++) {
 
       if (dungeon_grid_[Index(i, j)] == nullptr)
@@ -172,5 +193,6 @@ std::string Dungeon::toString() {
   }
   return dungeon;
 }
+
 
 int Dungeon::Index(int x_pos, int y_pos) { return x_pos + height * y_pos; }

@@ -43,6 +43,11 @@ class Room {
   // The chance a room will spawn in the given direction
   // Index corresponds to enum Direction's numeric value
   double direction_chances_[4];
+
+  // Not all adjacent rooms have entrances to each other.
+  // Direction will have a doorway if direction index is true
+  // Index corresponds to enum Direction's numeric value
+  bool has_door_[4];
 };
 
 

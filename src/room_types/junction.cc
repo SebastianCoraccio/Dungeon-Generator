@@ -16,6 +16,8 @@ parent_chance) {
   x_position_ = x_pos;
   y_position_ = y_pos;
 
+  has_door_[entrance] = true;
+
   // Decide how many branches are possible (0-3)
   if((rand() % 100) < (Config::kJunctionExitChance * 100.0))
     direction_chances_[Room::NORTH] = parent_chance - Config::kJunctionChanceDecay;
@@ -44,7 +46,18 @@ std::string Junction::toString() {
   std::string out = "Junction";
   out += "(x: " + std::to_string(x_position_);
   out += ", y: " + std::to_string(y_position_);
-  out += ") ";
+  out += ") Has doors:{\n";
+
+  if(has_door_[NORTH])
+    out += "North\n";
+  if(has_door_[EAST])
+    out += "East\n";
+  if(has_door_[WEST])
+    out += "West\n";
+  if(has_door_[SOUTH])
+    out += "South\n";
+
+  out += "}";
 
   return out;
 }

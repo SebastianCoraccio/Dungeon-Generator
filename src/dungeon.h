@@ -18,6 +18,7 @@ class Dungeon {
   int boss_x_pos_ = 0;
   int boss_y_pos_ = 0;
   int boss_depth_ = 0;
+  Room::Direction boss_entrance_direction_;
 
   // Allocates the dungeon grid into a single chunk of memory.
   void CreateGrid();
@@ -55,7 +56,7 @@ class Dungeon {
   void GenerateLayout(int start_x, int start_y);
 
   // Returns a reference to a room in the dungeon at the position
-  Room *GetRoom(int xpos, int ypos);
+  Room *GetRoom(int x_pos, int y_pos);
 
   // Outputs the dungeon layout using each rooms single character representation
   std::string toString();
