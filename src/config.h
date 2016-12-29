@@ -13,8 +13,8 @@ class Config {
   public:
 
   // The width and height of the dungeon grid
-  constexpr static int kGridWidth = 24;
-  constexpr static int kGridHeight = 24;
+  constexpr static int kGridWidth = 75;
+  constexpr static int kGridHeight = 50;
 
   // A start room will have this branch chance on all four directions
   constexpr static double kStartBranchChance = 0.85;
@@ -23,6 +23,9 @@ class Config {
   // this amount
   constexpr static double kHallwayChanceDecay = 0.025;
   constexpr static double kJunctionChanceDecay = 0.025;
+
+  // Chance a hallway will become a long hallway
+  constexpr static double kLongHallwayChance = 0.1;
 
   // When a junction is created it has 0-3 room exits. Each direction has a
   // random chance to have a non-zero chance to branch

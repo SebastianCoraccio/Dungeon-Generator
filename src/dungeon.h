@@ -34,7 +34,13 @@ class Dungeon {
   // Creates the branch room. Whether it is a junction of a hallway is decided randomly.
   void CreateRoom(int x_location, int y_location,
                   double branch_chance, Room::Direction entrance,
-                  Room::Direction exit);
+                  Room::Direction exit, int depth);
+
+  // Creates a long hallway if possible (2x1 or 1x2 depending on exit)
+  // Returns true if a long hallway was created
+  bool CreateLongHallway(int x_location, int y_location,
+                         double branch_chance, Room::Direction entrance,
+                         Room::Direction exit, int depth);
 
   // Checks that the x and y position are within the dungeon grid
   void CheckPosition(int x_pos, int y_pos);

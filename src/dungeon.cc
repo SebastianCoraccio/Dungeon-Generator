@@ -10,6 +10,7 @@
 #include "dungeon.h"
 #include "room_types/start_room.h"
 #include "room_types/hallway.h"
+#include "room_types/long_hallway.h"
 #include "room_types/junction.h"
 #include "room_types/boss_room.h"
 
@@ -96,7 +97,7 @@ void Dungeon::DoBranching(int room_x, int room_y, int depth) {
     if (dungeon_grid_[Index(north_x_index, room_y)] == nullptr) {
       CreateRoom(north_x_index, room_y,
                  room->direction_chances_[Room::NORTH], Room::SOUTH,
-                 Room::NORTH);
+                 Room::NORTH, depth);
       room->has_door_[Room::NORTH] = true;
       DoBranching(north_x_index, room_y, depth + 1);
     }
@@ -108,7 +109,7 @@ void Dungeon::DoBranching(int room_x, int room_y, int depth) {
     if (dungeon_grid_[Index(south_x_index, room_y)] == nullptr) {
       CreateRoom(south_x_index, room_y,
                  room->direction_chances_[Room::SOUTH], Room::NORTH,
-                 Room::SOUTH);
+                 Room::SOUTH, depth);
       room->has_door_[Room::SOUTH] = true;
       DoBranching(south_x_index, room_y, depth + 1);
     }
@@ -119,7 +120,8 @@ void Dungeon::DoBranching(int room_x, int room_y, int depth) {
     // Only create a room in the adjacent spot if no room currently exists
     if (dungeon_grid_[Index(room_x, east_y_index)] == nullptr) {
       CreateRoom(room_x, east_y_index,
-                 room->direction_chances_[Room::EAST], Room::WEST, Room::EAST);
+                 room->direction_chances_[Room::EAST], Room::WEST, Room::EAST,
+                 depth);
       room->has_door_[Room::EAST] = true;
       DoBranching(room_x, east_y_index, depth + 1);
     }
@@ -130,12 +132,12 @@ void Dungeon::DoBranching(int room_x, int room_y, int depth) {
     // Only create a room in the adjacent spot if no room currently exists
     if (dungeon_grid_[Index(room_x, west_y_index)] == nullptr) {
       CreateRoom(room_x, west_y_index,
-                 room->direction_chances_[Room::WEST], Room::EAST, Room::WEST);
+                 room->direction_chances_[Room::WEST], Room::EAST, Room::WEST,
+                 depth);
       room->has_door_[Room::WEST] = true;
       DoBranching(room_x, west_y_index, depth + 1);
     }
   }
-
 
 
 }
@@ -144,19 +146,112 @@ void Dungeon::DoBranching(int room_x, int room_y, int depth) {
 // decided randomly.
 void Dungeon::CreateRoom(int x_location, int y_location,
                          double branch_chance, Room::Direction entrance,
-                         Room::Direction exit) {
+                         Room::Direction exit, int depth) {
 
   if ((rand() % 100) < (Config::kCreateJunction * 100.0))
     dungeon_grid_[Index(x_location, y_location)] = new Junction(x_location,
                                                                 y_location,
                                                                 entrance,
                                                                 branch_chance);
-  else
+  else {
+    if ((rand() % 100) < (Config::kLongHallwayChance * 100.0)) {
+      std::cout << "A hallway would have been created\n";
+      if (CreateLongHallway(x_location, y_location,
+                            branch_chance, entrance, exit, depth))
+        return;
+    }
     dungeon_grid_[Index(x_location, y_location)] = new Hallway(x_location,
                                                                y_location,
                                                                entrance,
                                                                exit,
                                                                branch_chance);
+  }
+}
+
+// Creates a long hallway if possible (2x1 or 1x2 depending on exit)
+// Returns true if a long hallway was created
+bool Dungeon::CreateLongHallway(int x_location, int y_location,
+                                double branch_chance, Room::Direction entrance,
+                                Room::Direction exit, int depth) {
+
+  Room *room = dungeon_grid_[Index(x_location, y_location)];
+
+  // Find index of adjacent rooms
+  int north_x_index = x_location - 1;
+  int east_y_index = y_location + 1;
+  int west_y_index = y_location - 1;
+  int south_x_index = x_location + 1;
+
+  int new_room_x_location = x_location;
+  int new_room_y_location = y_location;
+  Room::Direction exit_direction;
+
+  switch (exit) {
+    case Room::NORTH : {
+      if (north_x_index > 0 &&
+          dungeon_grid_[Index(north_x_index, y_location)] == nullptr) {
+
+        new_room_x_location = north_x_index;
+        exit_direction = Room::NORTH;
+
+      } else return false;
+      break;
+    }
+    case Room::SOUTH : {
+      if (south_x_index < height_ &&
+          dungeon_grid_[Index(south_x_index, y_location)] == nullptr) {
+
+        new_room_x_location = south_x_index;
+        exit_direction = Room::SOUTH;
+
+      } else return false;
+      break;
+    }
+    case Room::EAST : {
+      if (east_y_index < width_ &&
+          dungeon_grid_[Index(x_location, east_y_index)] == nullptr) {
+
+        new_room_y_location = east_y_index;
+        exit_direction = Room::EAST;
+
+      } else return false;
+      break;
+    }
+    case Room::WEST : {
+      if (east_y_index > 0 &&
+          dungeon_grid_[Index(x_location, west_y_index)] == nullptr) {
+
+        new_room_y_location = west_y_index;
+        exit_direction = Room::WEST;
+
+      } else return false;
+      break;
+    }
+  }
+
+  // Create the first long hallway
+  dungeon_grid_[Index(x_location, y_location)] = new LongHallway(
+          x_location,
+          y_location,
+          entrance,
+          exit,
+          0);
+  // Give it a doorway to the next piece of the long hallway
+  dungeon_grid_[Index(x_location,
+                      y_location)]->has_door_[exit_direction] = true;
+
+  dungeon_grid_[Index(new_room_x_location,
+                      new_room_y_location)] = new LongHallway(
+          new_room_x_location,
+          new_room_y_location,
+          entrance,
+          exit,
+          branch_chance);
+
+  //Branch on end piece of the hallway and increment the depth by 2
+  DoBranching(new_room_x_location, new_room_y_location, depth + 2);
+  return true;
+
 }
 
 // Checks that the x and y position are within the dungeon grid
