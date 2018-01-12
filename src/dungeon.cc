@@ -8,11 +8,11 @@
 
 #include "config.h"
 #include "dungeon.h"
-#include "room_types/start_room.h"
-#include "room_types/hallway.h"
-#include "room_types/long_hallway.h"
-#include "room_types/junction.h"
-#include "room_types/boss_room.h"
+#include "start_room.h"
+#include "hallway.h"
+#include "long_hallway.h"
+#include "junction.h"
+#include "boss_room.h"
 
 // Creates a dungeon grid of size w by h
 Dungeon::Dungeon(int w, int h) {
@@ -155,7 +155,6 @@ void Dungeon::CreateRoom(int x_location, int y_location,
                                                                 branch_chance);
   else {
     if ((rand() % 100) < (Config::kLongHallwayChance * 100.0)) {
-      std::cout << "A hallway would have been created\n";
       if (CreateLongHallway(x_location, y_location,
                             branch_chance, entrance, exit, depth))
         return;

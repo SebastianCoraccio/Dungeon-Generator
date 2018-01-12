@@ -8,7 +8,7 @@
 #include <fstream>
 #include "dungeon.h"
 #include "dungeon_drawer.h"
-#include "room_types/room.h"
+#include "room.h"
 
 // Used to chance the size of the output file
 int kScale = 30;
