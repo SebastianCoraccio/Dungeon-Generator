@@ -13,8 +13,8 @@ class Config {
   public:
 
   // The width and height of the dungeon grid
-  constexpr static int kGridWidth = 75;
-  constexpr static int kGridHeight = 50;
+  constexpr static int kGridWidth = 24;
+  constexpr static int kGridHeight = 12;
 
   // A start room will have this branch chance on all four directions
   constexpr static double kStartBranchChance = 0.85;

@@ -30,13 +30,13 @@ std::string BossRoom::toString() {
   out += ") Has doors:{\n";
 
   if (has_door_[NORTH])
-    out += "North\n";
+    out += "  North\n";
   if (has_door_[EAST])
-    out += "East\n";
+    out += "  East\n";
   if (has_door_[WEST])
-    out += "West\n";
+    out += "  West\n";
   if (has_door_[SOUTH])
-    out += "South\n";
+    out += "  South\n";
 
   out += "}";
 
