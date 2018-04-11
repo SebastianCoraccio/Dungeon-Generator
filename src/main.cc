@@ -39,17 +39,23 @@ int main(int argc, char *argv[]) {
   int y_pos = 1;
 
   while (DO_DEBUGGING) {
-    std::cout << "\nEnter x position:";
+    std::cout << "\nEnter x position: ";
     std::cin >> x_pos;
 
     if (x_pos == -1)
       return 1;
 
-    std::cout << "Enter y position:";
+    std::cout << "Enter y position: ";
     std::cin >> y_pos;
 
     std::cout << std::endl << dun.toString();
-    std::cout << std::endl << dun.GetRoom(x_pos, y_pos)->toString();
+    
+    Room* r = dun.GetRoom(x_pos, y_pos);
+    if(r != nullptr)
+      std::cout << std::endl << dun.GetRoom(x_pos, y_pos)->toString();
+    else
+      std::cout << std::endl << "No room at (" << x_pos << ", " << y_pos << ")" << std::endl;
+      
   }
 
 }

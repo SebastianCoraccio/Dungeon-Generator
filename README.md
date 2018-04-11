@@ -92,3 +92,5 @@ Junction(x: 6, y: 14) Has doors:{
   West
 }
 ```
+
+**Note:** Dungeons with width or height higher than 100 will have visual errors with the indexes. They are written to only go up to 99. 
