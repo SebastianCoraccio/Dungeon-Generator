@@ -45,8 +45,20 @@ int main(int argc, char *argv[]) {
     if (x_pos == -1)
       return 1;
 
+    if (x_pos >= Config::kGridHeight || x_pos < 0) {
+      std::cerr << "Given X value must be 0 or greater " <<
+                "and less than the grid's width.\n";
+      continue;
+    }
+    
     std::cout << "Enter y position: ";
     std::cin >> y_pos;
+
+    if (y_pos >= Config::kGridWidth || y_pos < 0) {
+      std::cerr << "Given Y value must be 0 or greater " <<
+                "and less than the grid's height.\n";
+      continue;
+    }
 
     std::cout << std::endl << dun.toString();
     

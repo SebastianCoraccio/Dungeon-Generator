@@ -42,9 +42,6 @@ class Dungeon {
                          double branch_chance, Room::Direction entrance,
                          Room::Direction exit, int depth);
 
-  // Checks that the x and y position are within the dungeon grid
-  void CheckPosition(int x_pos, int y_pos);
-
   int Index(int x_pos, int y_pos);
 
   public:

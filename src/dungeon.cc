@@ -40,7 +40,6 @@ void Dungeon::DestroyGrid() {
 // Returns a reference to a room in the dungeon at the position
 // Positions in the grid are zero indexed
 Room *Dungeon::GetRoom(int x_pos, int y_pos) {
-  CheckPosition(x_pos, y_pos);
   return dungeon_grid_[Index(x_pos, y_pos)];
 }
 
@@ -61,7 +60,6 @@ void Dungeon::GenerateLayout() {
 
 // Create a random dungeon with defined start room
 void Dungeon::GenerateLayout(int start_x, int start_y) {
-  CheckPosition(start_x, start_y);
   dungeon_grid_[Index(start_x, start_y)] = new StartRoom(start_x, start_y);
 
   // Begin branching at start room location
@@ -250,21 +248,6 @@ bool Dungeon::CreateLongHallway(int x_location, int y_location,
   //Branch on end piece of the hallway and increment the depth by 2
   DoBranching(new_room_x_location, new_room_y_location, depth + 2);
   return true;
-
-}
-
-// Checks that the x and y position are within the dungeon grid
-void Dungeon::CheckPosition(int x_pos, int y_pos) {
-  if (x_pos >= height_ || x_pos < 0) {
-    std::cerr << "Given X value must be 0 or greater " <<
-              "and less than the grid's width.\n";
-    exit(1);
-  }
-  if (y_pos >= width_ || y_pos < 0) {
-    std::cerr << "Given Y value must be 0 or greater " <<
-              "and less than the grid's height.\n";
-    exit(-1);
-  }
 
 }
 
