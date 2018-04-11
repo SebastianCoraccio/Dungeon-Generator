@@ -1,5 +1,46 @@
 # Dungeon Generator
 
+This project creates grid-based dungeon layouts. Each dungeon begins in a start room and then branches off into junctions, hallways, and long hallways. The room furthest from the start room is a boss room. The layout is configured with different customizable probabilities. Different room types branch and creation changes are defined in `config.h`. 
+
+Below are some sample dungeons.
+
+**Key**
+```
+S - Start room
+J - Junction
+H - Hallway
+L - Long hallway (Two adjacent hallways, represents a long room)
+B - Boss Room
+
+
+ . . . . . . . . . . . . 
+ . . . . H . . . . . . . 
+ . . . . H . . . . . . . 
+ . . . . H . . . . . . . 
+ . H H H S H L L H H H . 
+ . . . . H . . . . . . .
+ . . . . H . . . . . . .
+ . . . . J J H . . . . .
+ . . . . . H . . . . . .
+ . . . . . B . . . . . .
+ . . . . . . . . . . . .
+
+ . . . . . . . . . .
+ . . H H . . . . . .
+ . . J J H J . . . .
+ . . H . . . . . . .
+ . . J H . . . . B .
+ . . H . . . . . L .
+ . . H . . . . . L .
+ . H S H H L L H J .
+ . . H . . . . . J .
+ . . J H H . . . H . 
+ . . H . . . . . . .
+ . . H . . . . . . .
+ . . J L L H . . . .
+ . . . . . . . . . .
+
+```
 ## Building
 
 To build the project run the command
