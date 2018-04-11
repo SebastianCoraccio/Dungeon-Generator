@@ -10,10 +10,8 @@ unsigned int hash(unsigned int x);
 
 int main(int argc, char *argv[]) {
 
-  if (argc == 2) {
-    if (argv[1])
-      DO_DEBUGGING = true;
-  }
+  if (argc >= 2) 
+    DO_DEBUGGING = true;
 
   unsigned seed = time(0);
   seed = hash(seed);

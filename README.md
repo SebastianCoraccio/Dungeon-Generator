@@ -1,8 +1,10 @@
 # Dungeon Generator
 
-This project creates grid-based dungeon layouts. Each dungeon begins in a start room and then branches off into junctions, hallways, and long hallways. The room furthest from the start room is a boss room. The layout is configured with different customizable probabilities. Different room types branch and creation changes are defined in `config.h`. 
+This project creates grid-based dungeon layouts using the `Dungeon` class. Each dungeon begins in a start room and then branches off into junctions, hallways, and long hallways. The room furthest from the start room is a boss room. The layout is configured with different customizable probabilities. Different room types branch and creation changes are defined in `config.h`. 
 
-Below are some sample dungeons.
+The dungeon class can be moved into a new project for other uses. The `main.cc` file simply provides a wrapper to demonstrate, interact, and test the `Dungeon` class.
+
+Below are some sample representations of dungeons and instructions to run this application.
 
 **Key**
 ```
@@ -51,8 +53,15 @@ Object files are stored in the build directory.
 
 The Dungeon Generator executable, `dgnGen` is stored in the bin directory
 
+To adjust the room creation chances see file `config.h`. Room creation and branching probabilties are defined there.
+
 ## Running
 
+Run the command 
+
+`dgnGen`
+
+This will create a dungeon and print the grid representation. 
 
 ### Debug Mode
 
@@ -60,12 +69,12 @@ Run the command
 
 `dgnGen debug`
 
-This will print the dungeon to the terminal and accept (x,y) coordinates in a loop. The entered room will have its `toString()`method called. This will output the 
+This will print the dungeon to the terminal and accept (x,y) coordinates in a loop. If the entered coordinates have a room it will have its `toString()` method called. This will output the name of the room type along with which of its walls have doors.
 
 
 #### Sample Run
 
-```dgnGen debug```
+`dgnGen debug`
 
 ```bash
 Enter x position:6

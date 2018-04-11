@@ -5,7 +5,6 @@
 
 #include <stdlib.h>
 
-
 #include "config.h"
 #include "dungeon.h"
 #include "start_room.h"
