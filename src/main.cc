@@ -21,13 +21,6 @@ int main(int argc, char *argv[]) {
     rand();
   }
 
-  /*
-  DungeonDrawer dd = DungeonDrawer(12,10);
-  dd.dungeon_->GenerateLayout(10/2, 12/2);
-  std::cout << dd.dungeon_->toString();
-  dd.PrintToFile();
-  */
-
   Dungeon dun = Dungeon(Config::kGridWidth, Config::kGridHeight);
 
   dun.GenerateLayout(Config::kGridHeight / 2, Config::kGridWidth / 2);

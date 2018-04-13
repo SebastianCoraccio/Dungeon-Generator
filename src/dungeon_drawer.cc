@@ -76,12 +76,17 @@ std::string DungeonDrawer::ConvertRow(int x_pos) {
 // Outputs a representation of the dungeon to a .pgm file
 void DungeonDrawer::PrintToFile() {
   std::ofstream outfile;
-  outfile.open("../src/dungeon.pgm");
-  outfile << "P2\n" << dungeon_->GetWidth() * kScale << " "
-          << dungeon_->GetHeight() * kScale << "\n" << "255\n";
+  outfile.open("bin/dungeon.pgm", std::ofstream::out | std::ofstream::trunc);
+  if(outfile.is_open()){ 
+    outfile << "P2\n" << dungeon_->GetWidth() * kScale << " "
+            << dungeon_->GetHeight() * kScale << "\n" << "255\n";
 
-  for (int i = 0; i < dungeon_->GetHeight(); i++)
-    outfile << ConvertRow(i);
+    for (int i = 0; i < dungeon_->GetHeight(); i++)
+      outfile << ConvertRow(i);
 
+    outfile.close();  
+  } else {
+    std::cerr << "Could not open file" << std::endl;
+  }
 
 }
