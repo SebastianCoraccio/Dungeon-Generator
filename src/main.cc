@@ -24,6 +24,10 @@ int main(int argc, char *argv[]) {
   Dungeon dun = Dungeon(Config::kGridWidth, Config::kGridHeight);
 
   dun.GenerateLayout(Config::kGridHeight / 2, Config::kGridWidth / 2);
+
+  DungeonDrawer dd = DungeonDrawer(&dun);
+  dd.PrintToFile();
+  
   std::cout << std::endl << dun.toString();
 
   int x_pos = 1;

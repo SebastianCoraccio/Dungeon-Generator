@@ -15,6 +15,9 @@ class DungeonDrawer {
   // Creates a dungeon drawer, and a new dungeon of width by height
   DungeonDrawer(int width, int height);
 
+  // Creates a new dungeon drawer using an existing dungeon
+  DungeonDrawer(Dungeon* dun);
+
   // dungeon that will be represented in the output file
   Dungeon *dungeon_;
 

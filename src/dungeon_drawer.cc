@@ -18,6 +18,11 @@ DungeonDrawer::DungeonDrawer(int width, int height) {
   dungeon_ = new Dungeon(width, height);
 }
 
+// Creates a new dungeon drawer using an existing dungeon
+DungeonDrawer::DungeonDrawer(Dungeon* dun) {
+  dungeon_ = dun;
+} 
+
 // The whole row is convert to pgm format at once because the pgm
 // format is line by line, so a whole row is several lines in a row
 // x_pos is the row number
