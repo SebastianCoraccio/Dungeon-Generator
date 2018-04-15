@@ -1,6 +1,5 @@
 .idea/
 .vscode/
 build/
-bin/dgnGen
+bin/
 *.cmake
-*.pgm
