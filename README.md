@@ -1,8 +1,8 @@
 # Dungeon Generator
 
-This project creates grid-based dungeon layouts using the `Dungeon` class. Each dungeon begins in a start room and then branches off into junctions, hallways, and long hallways. The room furthest from the start room is a boss room. The layout is configured with different customizable probabilities. Different room types branch and creation changes are defined in `config.h`. 
+This project creates grid-based dungeon layouts using the `Dungeon` class. Each dungeon begins in a start room and then branches off into junctions, hallways, and long hallways. The room furthest from the start room is a boss room. The layout is configured with different customizable probabilities. Different room types branch and creation changes are defined in `include/config.h`. 
 
-The dungeon class can be moved into a new project for other uses. The `main.cc` file simply provides a wrapper to demonstrate, interact, and test the `Dungeon` class.
+The dungeon class can be moved into a new project for other uses. The `src/main.cc` file simply provides a wrapper to demonstrate, interact, and test the `Dungeon` class.
 
 Below are some sample representations of dungeons and instructions to run this application.
 
@@ -49,11 +49,11 @@ To build the project run the command
 
 ```make```
 
-Object files are stored in the build directory.
+Object files are stored in the `build/` directory.
 
-The Dungeon Generator executable, `dgnGen` is stored in the bin directory
+The Dungeon Generator executable, `dgnGen` is stored in the `bin/` directory
 
-To adjust the room creation chances see file `config.h`. Room creation and branching probabilties are defined there.
+To adjust the room creation chances see file `include/config.h`. Room creation and branching probabilties are defined there.
 
 ## Running
 
@@ -112,4 +112,10 @@ A small utility class is included with the project that can be used to output th
 
 ### Samples
 
-[Sample Dungeon 1](Dungeon-Generator/sample/sampleDungeon1.png)
+#### Small Layout 
+
+![Sample Dungeon 1](sample/sampleDungeon1.png)
+
+#### Larger, longer hallways with more junction rooms
+
+![Sample Dungeon 2](sample/sampleDungeon2.png)
