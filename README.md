@@ -105,3 +105,11 @@ Junction(x: 6, y: 14) Has doors:{
 To exit debug mode enter `-1` when prompted for the x position (or ctrl+c).
 
 **Note:** Dungeons with width or height higher than 100 will have visual errors with the indexes. They are written to only go up to 99. 
+
+## Dungeon Drawer
+
+A small utility class is included with the project that can be used to output the generated dungeon as a PNG. The class can generate its own dungeon or takes a reference to an already created one. 
+
+### Samples
+
+

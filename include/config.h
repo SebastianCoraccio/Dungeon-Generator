@@ -37,4 +37,5 @@ class Config {
 
 };
 
+
 #endif //DGNGEN_CONFIG_H
